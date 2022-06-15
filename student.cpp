@@ -82,9 +82,6 @@ void Student<T>::splay(const T& x, node*& t) {
 				single_rotate_with_right(t);
 			if (t->right == nullnode)
 				break;
-			//rtmin->left=t;
-			//rtmin=t;
-			//t=t->left;
 			ltmax->right = t;
 			ltmax = t;
 			t = t->right;
