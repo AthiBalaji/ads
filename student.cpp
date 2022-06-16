@@ -23,6 +23,7 @@ class Student {
 	};
 	node* root;
 	node* nullnode;
+	
 	void Insert(const T& x, string n, node*& t);
 	void single_rotate_with_right(node*& t);
 	void single_rotate_with_left(node*& t);
@@ -33,6 +34,8 @@ class Student {
 	void find(T& x);
 	void findname(node*& k, string x);
 public:
+	node* p[100]{0};
+	int i = 0;
 	Student() {
 		nullnode = new node;
 		nullnode->left = nullnode->right = NULL;
@@ -82,6 +85,9 @@ void Student<T>::splay(const T& x, node*& t) {
 				single_rotate_with_right(t);
 			if (t->right == nullnode)
 				break;
+			//rtmin->left=t;
+			//rtmin=t;
+			//t=t->left;
 			ltmax->right = t;
 			ltmax = t;
 			t = t->right;
@@ -193,8 +199,11 @@ void Student<T>::find(T& x) {
 	}
 
 }
+
+
 template<typename T>
 void Student<T>::findname(node*&k, string x) {
+	
 	if (k != NULL) {
 
 		const char* cx = x.c_str();
@@ -203,10 +212,11 @@ void Student<T>::findname(node*&k, string x) {
 		findname(k->right, x);
 		if (!strcmp(cx, cname)) {
 			cout << k->rollno << "\t" << k->name << endl;
+			p[i] = k;
+			i++;
 		}
 		
 	}
-	
 
 }
 
@@ -236,6 +246,13 @@ int main() {
 			j = stoi(c4);
 			obj.Find(j);
 
+		}
+		else if (c3 == "N") {
+			getline(db, c4, ';');
+			obj.findn(c4);
+			for (int o = 0; o < obj.i; o++) {
+				obj.Find(obj.p[o]->rollno);
+			}
 		}
 	}
 	
@@ -284,6 +301,12 @@ int main() {
 			cout << "Enter name to find\n";
 			cin >> k1;
 			obj.findn(k1);
+			for (int o = 0; o < obj.i; o++) {
+				obj.Find(obj.p[o]->rollno);
+			}
+			ofstream db("db.txt", ios_base::app);
+			db << "N;" << k1 << ";";
+			db.close();
 			break;
 		}
 		cout << "\nEnter 1 to continue 0 to exit \n";
